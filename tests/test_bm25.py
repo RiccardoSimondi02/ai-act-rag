@@ -1,4 +1,8 @@
-from ai_act_rag.retrieval.bm25 import BM25Retriever, tokenize
+import math
+
+import pytest
+
+from ai_act_rag.retrieval.bm25 import BM25Lucene, BM25Retriever, tokenize
 
 CHUNKS = [
     {"chunk_id": "x", "unit_ids": ["x"], "text": "the cat sleeps"},
@@ -18,3 +22,10 @@ def test_search_returns_the_best_k_chunks_first():
     assert set(results[0]) == {"chunk_id", "unit_ids", "score"}
     assert results[0]["chunk_id"] == "y"
     assert results[0]["score"] > results[1]["score"] == 0
+
+
+def test_lucene_idf_ranks_common_words_below_rare_ones():
+    idf = BM25Retriever(CHUNKS, index_class=BM25Lucene).index.idf
+    # "a" is in two chunks out of three, "bird" in one.
+    assert idf["a"] == pytest.approx(math.log(1 + 1.5 / 2.5))
+    assert idf["bird"] == pytest.approx(math.log(1 + 2.5 / 1.5))

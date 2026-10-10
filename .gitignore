@@ -223,4 +223,5 @@ progetto-1-rag-produzione.md
 run.txt
 domande.txt
 data/processed
+data/embeddings
 README.md

@@ -1,0 +1,1075 @@
+{
+  "config": {
+    "run": "bm25_stem_v0",
+    "retriever": "bm25",
+    "tokenizer": "stem",
+    "chunking": "v0",
+    "library": "rank_bm25.BM25Okapi",
+    "idf": "okapi",
+    "k1": 1.5,
+    "b": 0.75,
+    "split": "dev",
+    "depth": 100,
+    "chunks": 673,
+    "build_seconds": 0.57,
+    "mean_query_seconds": 0.0014
+  },
+  "summary": {
+    "factual": {
+      "questions": 11,
+      "recall@5": 0.5454545454545454,
+      "recall@10": 0.8181818181818182,
+      "recall@20": 0.9090909090909091,
+      "mrr": 0.481962481962482
+    },
+    "exact_term": {
+      "questions": 8,
+      "recall@5": 0.5,
+      "recall@10": 0.5,
+      "recall@20": 0.5,
+      "mrr": 0.32242281527995814
+    },
+    "multi_hop": {
+      "questions": 6,
+      "recall@5": 0.4166666666666667,
+      "recall@10": 0.5833333333333334,
+      "recall@20": 0.6666666666666666,
+      "mrr": 0.6948621553884712
+    },
+    "total": {
+      "questions": 25,
+      "recall@5": 0.5,
+      "recall@10": 0.66,
+      "recall@20": 0.72,
+      "mrr": 0.4820057102463117
+    }
+  },
+  "questions": [
+    {
+      "id": "q001",
+      "type": "factual",
+      "question": "How much can a company be fined for using an AI practice that is banned under the AI Act?",
+      "gold_positions": {
+        "art_99.par_3": 7
+      },
+      "top_score": 17.68422,
+      "top_results": [
+        {
+          "chunk_id": "art_3.pt_63",
+          "score": 17.68422
+        },
+        {
+          "chunk_id": "anx_XII",
+          "score": 17.12095
+        },
+        {
+          "chunk_id": "anx_IV.pt_1",
+          "score": 16.99281
+        },
+        {
+          "chunk_id": "art_3.pt_1",
+          "score": 15.95086
+        },
+        {
+          "chunk_id": "art_48.par_2",
+          "score": 15.81446
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.14285714285714285
+    },
+    {
+      "id": "q002",
+      "type": "factual",
+      "question": "Do companies have to tell people when they are talking to a chatbot rather than a human?",
+      "gold_positions": {
+        "art_50.par_1": 14
+      },
+      "top_score": 17.99882,
+      "top_results": [
+        {
+          "chunk_id": "art_51.par_2",
+          "score": 17.99882
+        },
+        {
+          "chunk_id": "art_6.par_1c",
+          "score": 16.98635
+        },
+        {
+          "chunk_id": "art_41.par_5",
+          "score": 16.54326
+        },
+        {
+          "chunk_id": "art_74.par_13",
+          "score": 13.89703
+        },
+        {
+          "chunk_id": "art_14.par_2",
+          "score": 13.69747
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 1.0,
+      "rr": 0.07142857142857142
+    },
+    {
+      "id": "q004",
+      "type": "factual",
+      "question": "From what date do the obligations for the high-risk AI systems listed in Annex III apply?",
+      "gold_positions": {
+        "art_113": 9
+      },
+      "top_score": 23.92372,
+      "top_results": [
+        {
+          "chunk_id": "art_111.par_2",
+          "score": 23.92372
+        },
+        {
+          "chunk_id": "art_46.par_7",
+          "score": 23.84574
+        },
+        {
+          "chunk_id": "art_6.par_3",
+          "score": 23.80866
+        },
+        {
+          "chunk_id": "art_49.par_1",
+          "score": 23.71928
+        },
+        {
+          "chunk_id": "art_49.par_3",
+          "score": 23.32385
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.1111111111111111
+    },
+    {
+      "id": "q006",
+      "type": "exact_term",
+      "question": "What is a 'deployer' under the AI Act?",
+      "gold_positions": {
+        "art_3.pt_4": 1
+      },
+      "top_score": 12.13513,
+      "top_results": [
+        {
+          "chunk_id": "art_3.pt_4",
+          "score": 12.13513
+        },
+        {
+          "chunk_id": "art_75.par_1b",
+          "score": 11.44417
+        },
+        {
+          "chunk_id": "art_11.par_2",
+          "score": 11.27451
+        },
+        {
+          "chunk_id": "art_86.par_1",
+          "score": 10.99428
+        },
+        {
+          "chunk_id": "art_35.par_1",
+          "score": 10.72162
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q007",
+      "type": "exact_term",
+      "question": "What does Article 5(1)(h) prohibit?",
+      "gold_positions": {
+        "art_5.par_1": 49
+      },
+      "top_score": 10.40148,
+      "top_results": [
+        {
+          "chunk_id": "art_100.par_2",
+          "score": 10.40148
+        },
+        {
+          "chunk_id": "art_80.par_6",
+          "score": 7.90844
+        },
+        {
+          "chunk_id": "art_81.par_1",
+          "score": 7.56994
+        },
+        {
+          "chunk_id": "art_99.par_3",
+          "score": 7.50136
+        },
+        {
+          "chunk_id": "art_5.par_1a",
+          "score": 7.20966
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.02040816326530612
+    },
+    {
+      "id": "q009",
+      "type": "abstain",
+      "question": "What are the seven key requirements for trustworthy AI defined by the High-Level Expert Group on AI?",
+      "gold_positions": {},
+      "top_score": 21.22898,
+      "top_results": [
+        {
+          "chunk_id": "art_95.par_2",
+          "score": 21.22898
+        },
+        {
+          "chunk_id": "art_4.par_1",
+          "score": 19.44037
+        },
+        {
+          "chunk_id": "art_1.par_1",
+          "score": 19.38984
+        },
+        {
+          "chunk_id": "art_9.par_8",
+          "score": 17.30205
+        },
+        {
+          "chunk_id": "art_56.par_5",
+          "score": 16.99826
+        }
+      ]
+    },
+    {
+      "id": "q010",
+      "type": "abstain",
+      "question": "How much does it cost to register a high-risk AI system in the EU database?",
+      "gold_positions": {},
+      "top_score": 25.79277,
+      "top_results": [
+        {
+          "chunk_id": "art_49.par_3",
+          "score": 25.79277
+        },
+        {
+          "chunk_id": "art_49.par_1",
+          "score": 25.25018
+        },
+        {
+          "chunk_id": "art_71.par_1",
+          "score": 23.58988
+        },
+        {
+          "chunk_id": "art_49.par_2",
+          "score": 23.33587
+        },
+        {
+          "chunk_id": "art_26.par_8",
+          "score": 22.42918
+        }
+      ]
+    },
+    {
+      "id": "q012",
+      "type": "abstain",
+      "question": "Is there a minimum age for using generative AI chatbots under the AI Act?",
+      "gold_positions": {},
+      "top_score": 16.5792,
+      "top_results": [
+        {
+          "chunk_id": "art_5.par_1a",
+          "score": 16.5792
+        },
+        {
+          "chunk_id": "art_50.par_4",
+          "score": 16.31156
+        },
+        {
+          "chunk_id": "art_75b",
+          "score": 15.39313
+        },
+        {
+          "chunk_id": "art_6.par_6",
+          "score": 15.28857
+        },
+        {
+          "chunk_id": "art_7.par_2",
+          "score": 15.1638
+        }
+      ]
+    },
+    {
+      "id": "q013",
+      "type": "abstain",
+      "question": "How large is the AI Office's annual budget?",
+      "gold_positions": {},
+      "top_score": 12.34047,
+      "top_results": [
+        {
+          "chunk_id": "art_100.par_6",
+          "score": 12.34047
+        },
+        {
+          "chunk_id": "art_3.pt_47",
+          "score": 12.01672
+        },
+        {
+          "chunk_id": "art_75.par_1c",
+          "score": 11.41543
+        },
+        {
+          "chunk_id": "art_57.par_16",
+          "score": 11.03427
+        },
+        {
+          "chunk_id": "art_100.par_1",
+          "score": 10.99977
+        }
+      ]
+    },
+    {
+      "id": "q016",
+      "type": "abstain",
+      "question": "How does the AI Act define artificial general intelligence (AGI)?",
+      "gold_positions": {},
+      "top_score": 18.01512,
+      "top_results": [
+        {
+          "chunk_id": "art_65.par_1",
+          "score": 18.01512
+        },
+        {
+          "chunk_id": "art_1.par_1",
+          "score": 15.43442
+        },
+        {
+          "chunk_id": "art_6.par_5",
+          "score": 15.35547
+        },
+        {
+          "chunk_id": "art_52.par_3",
+          "score": 11.52493
+        },
+        {
+          "chunk_id": "art_52.par_2",
+          "score": 11.15754
+        }
+      ]
+    },
+    {
+      "id": "q019",
+      "type": "multi_hop",
+      "question": "Can an employer use AI to detect employees' emotions, and where emotion recognition is allowed, what must deployers tell people?",
+      "gold_positions": {
+        "art_5.par_1": 33,
+        "art_50.par_3": 1
+      },
+      "top_score": 32.89802,
+      "top_results": [
+        {
+          "chunk_id": "art_50.par_3",
+          "score": 32.89802
+        },
+        {
+          "chunk_id": "art_3.pt_39",
+          "score": 27.44857
+        },
+        {
+          "chunk_id": "anx_III.pt_1",
+          "score": 22.11615
+        },
+        {
+          "chunk_id": "art_3.pt_56",
+          "score": 18.99745
+        },
+        {
+          "chunk_id": "art_26.par_7",
+          "score": 16.75357
+        }
+      ],
+      "recall@5": 0.5,
+      "recall@10": 0.5,
+      "recall@20": 0.5,
+      "rr": 1.0
+    },
+    {
+      "id": "q020",
+      "type": "multi_hop",
+      "question": "What counts as a general-purpose AI model, and what documentation must its provider prepare?",
+      "gold_positions": {
+        "art_3.pt_63": 22,
+        "art_53.par_1": 1
+      },
+      "top_score": 17.73781,
+      "top_results": [
+        {
+          "chunk_id": "art_53.par_1",
+          "score": 17.73781
+        },
+        {
+          "chunk_id": "art_52.par_2",
+          "score": 17.4624
+        },
+        {
+          "chunk_id": "anx_XI",
+          "score": 17.30668
+        },
+        {
+          "chunk_id": "art_55.par_1",
+          "score": 17.14853
+        },
+        {
+          "chunk_id": "art_52.par_3",
+          "score": 16.24157
+        }
+      ],
+      "recall@5": 0.5,
+      "recall@10": 0.5,
+      "recall@20": 0.5,
+      "rr": 1.0
+    },
+    {
+      "id": "q025",
+      "type": "multi_hop",
+      "question": "How long must deployers keep the logs of a high-risk AI system, and how long must providers keep its technical documentation?",
+      "gold_positions": {
+        "art_26.par_6": 1,
+        "art_18.par_1": 4
+      },
+      "top_score": 30.43106,
+      "top_results": [
+        {
+          "chunk_id": "art_26.par_6",
+          "score": 30.43106
+        },
+        {
+          "chunk_id": "art_19.par_1",
+          "score": 27.3991
+        },
+        {
+          "chunk_id": "art_16",
+          "score": 25.84364
+        },
+        {
+          "chunk_id": "art_18.par_1",
+          "score": 25.08344
+        },
+        {
+          "chunk_id": "art_53.par_1",
+          "score": 24.3968
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q026",
+      "type": "multi_hop",
+      "question": "What does the AI Act prohibit regarding AI-generated sexual images of real people, and from when does that ban apply?",
+      "gold_positions": {
+        "art_5.par_1": 7,
+        "art_113": 12
+      },
+      "top_score": 24.55042,
+      "top_results": [
+        {
+          "chunk_id": "art_5.par_1a",
+          "score": 24.55042
+        },
+        {
+          "chunk_id": "art_50.par_4",
+          "score": 24.11764
+        },
+        {
+          "chunk_id": "art_5.par_1b",
+          "score": 22.23468
+        },
+        {
+          "chunk_id": "art_2.par_8",
+          "score": 21.49672
+        },
+        {
+          "chunk_id": "art_79.par_5",
+          "score": 21.47884
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.5,
+      "recall@20": 1.0,
+      "rr": 0.14285714285714285
+    },
+    {
+      "id": "q027",
+      "type": "multi_hop",
+      "question": "Do the AI Act's transparency rules cover deepfakes as well as chatbots, and what must be disclosed in each case?",
+      "gold_positions": {
+        "art_50.par_1": null,
+        "art_50.par_4": 38
+      },
+      "top_score": 19.88362,
+      "top_results": [
+        {
+          "chunk_id": "art_13.par_1",
+          "score": 19.88362
+        },
+        {
+          "chunk_id": "art_99.par_8",
+          "score": 18.74469
+        },
+        {
+          "chunk_id": "art_58.par_1",
+          "score": 17.91626
+        },
+        {
+          "chunk_id": "art_1.par_2",
+          "score": 17.72872
+        },
+        {
+          "chunk_id": "art_22.par_4",
+          "score": 17.27731
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.02631578947368421
+    },
+    {
+      "id": "q028",
+      "type": "multi_hop",
+      "question": "What is a post-market monitoring system, and who must set one up for high-risk AI systems?",
+      "gold_positions": {
+        "art_3.pt_25": 10,
+        "art_72.par_1": 1
+      },
+      "top_score": 25.9486,
+      "top_results": [
+        {
+          "chunk_id": "art_72.par_1",
+          "score": 25.9486
+        },
+        {
+          "chunk_id": "art_12.par_2",
+          "score": 22.95013
+        },
+        {
+          "chunk_id": "art_72.par_2",
+          "score": 22.53741
+        },
+        {
+          "chunk_id": "art_9.par_2",
+          "score": 20.31544
+        },
+        {
+          "chunk_id": "art_72.par_3",
+          "score": 20.29027
+        }
+      ],
+      "recall@5": 0.5,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q030",
+      "type": "factual",
+      "question": "Do companies have to train their staff on AI under the AI Act?",
+      "gold_positions": {
+        "art_4.par_1": 1
+      },
+      "top_score": 19.41305,
+      "top_results": [
+        {
+          "chunk_id": "art_4.par_1",
+          "score": 19.41305
+        },
+        {
+          "chunk_id": "art_91.par_5",
+          "score": 17.72938
+        },
+        {
+          "chunk_id": "art_92.par_5",
+          "score": 16.12986
+        },
+        {
+          "chunk_id": "art_6.par_6",
+          "score": 15.04246
+        },
+        {
+          "chunk_id": "art_15.par_5",
+          "score": 14.74199
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q031",
+      "type": "factual",
+      "question": "Does the AI Act apply to AI systems used only for military purposes?",
+      "gold_positions": {
+        "art_2.par_3": 1
+      },
+      "top_score": 26.46907,
+      "top_results": [
+        {
+          "chunk_id": "art_2.par_3",
+          "score": 26.46907
+        },
+        {
+          "chunk_id": "art_10.par_6",
+          "score": 18.97446
+        },
+        {
+          "chunk_id": "art_2.par_6",
+          "score": 18.55777
+        },
+        {
+          "chunk_id": "art_2.par_10",
+          "score": 18.41413
+        },
+        {
+          "chunk_id": "art_5.par_1a",
+          "score": 18.10462
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q033",
+      "type": "factual",
+      "question": "Is social scoring with AI banned in the EU?",
+      "gold_positions": {
+        "art_5.par_1": 1
+      },
+      "top_score": 12.1937,
+      "top_results": [
+        {
+          "chunk_id": "art_5.par_1",
+          "score": 12.1937
+        },
+        {
+          "chunk_id": "anx_V",
+          "score": 10.1203
+        },
+        {
+          "chunk_id": "art_47.par_2",
+          "score": 10.11951
+        },
+        {
+          "chunk_id": "art_81.par_3",
+          "score": 9.78552
+        },
+        {
+          "chunk_id": "anx_III.pt_5",
+          "score": 9.77653
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q038",
+      "type": "factual",
+      "question": "How long can a high-risk AI system be tested in real-world conditions outside a sandbox?",
+      "gold_positions": {
+        "art_60.par_4": 7
+      },
+      "top_score": 32.48093,
+      "top_results": [
+        {
+          "chunk_id": "art_60.par_1",
+          "score": 32.48093
+        },
+        {
+          "chunk_id": "art_60a.par_1",
+          "score": 30.70757
+        },
+        {
+          "chunk_id": "art_3.pt_57",
+          "score": 28.51975
+        },
+        {
+          "chunk_id": "art_57.par_5",
+          "score": 27.75589
+        },
+        {
+          "chunk_id": "art_3.pt_55",
+          "score": 27.68672
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.14285714285714285
+    },
+    {
+      "id": "q039",
+      "type": "factual",
+      "question": "Do providers of general-purpose AI models have to respect copyright?",
+      "gold_positions": {
+        "art_53.par_1": 3
+      },
+      "top_score": 19.37903,
+      "top_results": [
+        {
+          "chunk_id": "art_53.par_4",
+          "score": 19.37903
+        },
+        {
+          "chunk_id": "art_55.par_2",
+          "score": 19.01389
+        },
+        {
+          "chunk_id": "art_53.par_1",
+          "score": 18.88111
+        },
+        {
+          "chunk_id": "art_41.par_5",
+          "score": 18.32622
+        },
+        {
+          "chunk_id": "art_56.par_7",
+          "score": 15.86181
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.3333333333333333
+    },
+    {
+      "id": "q040",
+      "type": "factual",
+      "question": "Are open-source AI models exempt from the documentation obligations for general-purpose AI models?",
+      "gold_positions": {
+        "art_53.par_2": 2
+      },
+      "top_score": 33.20516,
+      "top_results": [
+        {
+          "chunk_id": "art_54.par_6",
+          "score": 33.20516
+        },
+        {
+          "chunk_id": "art_53.par_2",
+          "score": 31.07305
+        },
+        {
+          "chunk_id": "art_55.par_1",
+          "score": 26.81111
+        },
+        {
+          "chunk_id": "art_25.par_4",
+          "score": 24.91927
+        },
+        {
+          "chunk_id": "art_92.par_3",
+          "score": 22.33713
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.5
+    },
+    {
+      "id": "q043",
+      "type": "factual",
+      "question": "How much can an EU agency be fined for using a prohibited AI practice?",
+      "gold_positions": {
+        "art_100.par_2": 1
+      },
+      "top_score": 15.39823,
+      "top_results": [
+        {
+          "chunk_id": "art_100.par_2",
+          "score": 15.39823
+        },
+        {
+          "chunk_id": "art_99.par_3",
+          "score": 14.59866
+        },
+        {
+          "chunk_id": "art_5.par_8",
+          "score": 13.25601
+        },
+        {
+          "chunk_id": "art_3.pt_4",
+          "score": 13.04472
+        },
+        {
+          "chunk_id": "art_10.par_2",
+          "score": 12.76384
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q044",
+      "type": "factual",
+      "question": "Does a company outside the EU that sells a high-risk AI system in Europe need a representative in the EU?",
+      "gold_positions": {
+        "art_22.par_1": null
+      },
+      "top_score": 27.87093,
+      "top_results": [
+        {
+          "chunk_id": "art_49.par_1",
+          "score": 27.87093
+        },
+        {
+          "chunk_id": "art_23.par_1",
+          "score": 26.14639
+        },
+        {
+          "chunk_id": "art_22.par_3",
+          "score": 26.07276
+        },
+        {
+          "chunk_id": "art_3.pt_57",
+          "score": 25.74753
+        },
+        {
+          "chunk_id": "art_16",
+          "score": 25.20729
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.0
+    },
+    {
+      "id": "q049",
+      "type": "exact_term",
+      "question": "What does 'substantial modification' mean in the AI Act?",
+      "gold_positions": {
+        "art_3.pt_23": 1
+      },
+      "top_score": 18.77128,
+      "top_results": [
+        {
+          "chunk_id": "art_3.pt_23",
+          "score": 18.77128
+        },
+        {
+          "chunk_id": "art_43.par_4",
+          "score": 16.33732
+        },
+        {
+          "chunk_id": "art_12.par_2",
+          "score": 16.29747
+        },
+        {
+          "chunk_id": "art_2.par_3",
+          "score": 13.46372
+        },
+        {
+          "chunk_id": "art_52.par_2",
+          "score": 13.12454
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 1.0
+    },
+    {
+      "id": "q050",
+      "type": "exact_term",
+      "question": "How does the AI Act define 'AI literacy'?",
+      "gold_positions": {
+        "art_3.pt_56": 3
+      },
+      "top_score": 16.8071,
+      "top_results": [
+        {
+          "chunk_id": "art_4.par_1",
+          "score": 16.8071
+        },
+        {
+          "chunk_id": "art_4.par_3",
+          "score": 12.31248
+        },
+        {
+          "chunk_id": "art_3.pt_56",
+          "score": 12.13861
+        },
+        {
+          "chunk_id": "art_7.par_3",
+          "score": 11.33577
+        },
+        {
+          "chunk_id": "art_9.par_8",
+          "score": 10.99582
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.3333333333333333
+    },
+    {
+      "id": "q056",
+      "type": "exact_term",
+      "question": "What criteria does Annex XIII set out?",
+      "gold_positions": {
+        "anx_XIII": 39
+      },
+      "top_score": 21.16234,
+      "top_results": [
+        {
+          "chunk_id": "art_52.par_4",
+          "score": 21.16234
+        },
+        {
+          "chunk_id": "art_51.par_1",
+          "score": 14.78198
+        },
+        {
+          "chunk_id": "art_52.par_5",
+          "score": 11.39428
+        },
+        {
+          "chunk_id": "art_112.par_11",
+          "score": 9.85653
+        },
+        {
+          "chunk_id": "art_67.par_3",
+          "score": 9.087
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.02564102564102564
+    },
+    {
+      "id": "q057",
+      "type": "exact_term",
+      "question": "What does Article 26(1) require from deployers?",
+      "gold_positions": {
+        "art_26.par_1": null
+      },
+      "top_score": 8.43885,
+      "top_results": [
+        {
+          "chunk_id": "art_99.par_4",
+          "score": 8.43885
+        },
+        {
+          "chunk_id": "art_27.par_3",
+          "score": 7.86241
+        },
+        {
+          "chunk_id": "anx_VIII.sec_C",
+          "score": 7.73014
+        },
+        {
+          "chunk_id": "art_2.par_10",
+          "score": 7.17977
+        },
+        {
+          "chunk_id": "art_91.par_4",
+          "score": 7.05378
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.0
+    },
+    {
+      "id": "q058",
+      "type": "exact_term",
+      "question": "What does Article 4a allow providers of high-risk AI systems to do?",
+      "gold_positions": {
+        "art_4a.par_1": null
+      },
+      "top_score": 17.78836,
+      "top_results": [
+        {
+          "chunk_id": "art_10.par_6",
+          "score": 17.78836
+        },
+        {
+          "chunk_id": "art_10.par_1",
+          "score": 16.01237
+        },
+        {
+          "chunk_id": "art_55.par_2",
+          "score": 15.06632
+        },
+        {
+          "chunk_id": "art_60a.par_1",
+          "score": 14.78985
+        },
+        {
+          "chunk_id": "art_14.par_4",
+          "score": 14.57708
+        }
+      ],
+      "recall@5": 0.0,
+      "recall@10": 0.0,
+      "recall@20": 0.0,
+      "rr": 0.0
+    },
+    {
+      "id": "q060",
+      "type": "exact_term",
+      "question": "According to Article 65, who sits on the European Artificial Intelligence Board?",
+      "gold_positions": {
+        "art_65.par_2": 5
+      },
+      "top_score": 27.76329,
+      "top_results": [
+        {
+          "chunk_id": "art_65.par_1",
+          "score": 27.76329
+        },
+        {
+          "chunk_id": "art_6.par_5",
+          "score": 21.98668
+        },
+        {
+          "chunk_id": "art_1.par_1",
+          "score": 14.91909
+        },
+        {
+          "chunk_id": "art_50.par_7",
+          "score": 13.06138
+        },
+        {
+          "chunk_id": "art_65.par_2",
+          "score": 12.22874
+        }
+      ],
+      "recall@5": 1.0,
+      "recall@10": 1.0,
+      "recall@20": 1.0,
+      "rr": 0.2
+    }
+  ]
+}
