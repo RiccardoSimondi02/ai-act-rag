@@ -18,7 +18,7 @@
         "chunking": "v1",
         "library": "sentence-transformers",
         "weights_dtype": "torch.bfloat16",
-        "encode_seconds": 2.55,
+        "encode_seconds": 16.77,
         "embeddings_from_cache": true
       }
     },
@@ -27,8 +27,8 @@
     "split": "dev",
     "depth": 100,
     "chunks": 673,
-    "build_seconds": 8.03,
-    "mean_query_seconds": 0.0386
+    "build_seconds": 7.4,
+    "mean_query_seconds": 0.1925
   },
   "summary": {
     "factual": {
@@ -36,6 +36,8 @@
       "recall@5": 0.9090909090909091,
       "recall@10": 0.9090909090909091,
       "recall@20": 0.9090909090909091,
+      "recall@1000w": 0.8181818181818182,
+      "recall@2000w": 0.9090909090909091,
       "mrr": 0.7252525252525253
     },
     "exact_term": {
@@ -43,6 +45,8 @@
       "recall@5": 0.75,
       "recall@10": 0.75,
       "recall@20": 0.875,
+      "recall@1000w": 0.75,
+      "recall@2000w": 0.75,
       "mrr": 0.4875
     },
     "multi_hop": {
@@ -50,6 +54,8 @@
       "recall@5": 0.6666666666666666,
       "recall@10": 0.75,
       "recall@20": 0.9166666666666666,
+      "recall@1000w": 0.6666666666666666,
+      "recall@2000w": 0.9166666666666666,
       "mrr": 0.8888888888888888
     },
     "total": {
@@ -57,6 +63,8 @@
       "recall@5": 0.8,
       "recall@10": 0.82,
       "recall@20": 0.9,
+      "recall@1000w": 0.76,
+      "recall@2000w": 0.86,
       "mrr": 0.6884444444444444
     }
   },
@@ -94,6 +102,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -129,6 +139,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -164,6 +176,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.2
     },
     {
@@ -199,6 +213,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -234,6 +250,8 @@
       "recall@5": 0.0,
       "recall@10": 0.0,
       "recall@20": 1.0,
+      "recall@1000w": 0.0,
+      "recall@2000w": 0.0,
       "rr": 0.06666666666666667
     },
     {
@@ -415,6 +433,8 @@
       "recall@5": 0.5,
       "recall@10": 0.5,
       "recall@20": 1.0,
+      "recall@1000w": 0.5,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -451,6 +471,8 @@
       "recall@5": 0.5,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 0.5,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -487,6 +509,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -523,6 +547,8 @@
       "recall@5": 0.5,
       "recall@10": 0.5,
       "recall@20": 1.0,
+      "recall@1000w": 0.5,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -559,6 +585,8 @@
       "recall@5": 0.5,
       "recall@10": 0.5,
       "recall@20": 0.5,
+      "recall@1000w": 0.5,
+      "recall@2000w": 0.5,
       "rr": 0.3333333333333333
     },
     {
@@ -595,6 +623,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -630,6 +660,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -665,6 +697,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -700,6 +734,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -735,6 +771,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 0.0,
+      "recall@2000w": 1.0,
       "rr": 0.25
     },
     {
@@ -770,6 +808,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -805,6 +845,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.5
     },
     {
@@ -840,6 +882,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -875,6 +919,8 @@
       "recall@5": 0.0,
       "recall@10": 0.0,
       "recall@20": 0.0,
+      "recall@1000w": 0.0,
+      "recall@2000w": 0.0,
       "rr": 0.027777777777777776
     },
     {
@@ -910,6 +956,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 1.0
     },
     {
@@ -945,6 +993,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.5
     },
     {
@@ -980,6 +1030,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.5
     },
     {
@@ -1015,6 +1067,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.3333333333333333
     },
     {
@@ -1050,6 +1104,8 @@
       "recall@5": 0.0,
       "recall@10": 0.0,
       "recall@20": 0.0,
+      "recall@1000w": 0.0,
+      "recall@2000w": 0.0,
       "rr": 0.0
     },
     {
@@ -1085,6 +1141,8 @@
       "recall@5": 1.0,
       "recall@10": 1.0,
       "recall@20": 1.0,
+      "recall@1000w": 1.0,
+      "recall@2000w": 1.0,
       "rr": 0.5
     }
   ]

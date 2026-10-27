@@ -54,12 +54,11 @@ def main() -> None:
             )
 
     print(f"{up} gold units moved up, {down} moved down")
+    columns = ["recall@5", "recall@10", "recall@20", "recall@1000w", "recall@2000w", "mrr"]
+    print(f"{'run':<22}" + "".join(f"{column:>14}" for column in columns))
     for name, run in zip(names, (before, after)):
         total = run["summary"]["total"]
-        print(
-            f"{name:<20}recall@5 {total['recall@5']:.3f}  "
-            f"recall@10 {total['recall@10']:.3f}  recall@20 {total['recall@20']:.3f} mrr {total['mrr']:.3f}"
-        )
+        print(f"{name:<22}" + "".join(f"{total[column]:>14.3f}" if column in total else f"{'-':>14}" for column in columns))
 
 
 if __name__ == "__main__":

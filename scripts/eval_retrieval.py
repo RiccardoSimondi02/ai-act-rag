@@ -10,8 +10,8 @@ from statistics import mean
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from ai_act_rag.evaluation.metrics import recall_at_k, reciprocal_rank
-from ai_act_rag.ingestion.chunking import units_to_chunks, units_to_chunks_v1
+from ai_act_rag.evaluation.metrics import recall_at_budget, recall_at_k, reciprocal_rank
+from ai_act_rag.ingestion.chunking import units_to_chunks, units_to_chunks_fixed, units_to_chunks_v1, units_to_chunks_v2
 from ai_act_rag.ingestion.parse_eurlex import load_soup, parse_units
 from rank_bm25 import BM25Okapi
 
@@ -35,6 +35,8 @@ TOKENIZERS = {
 CHUNKERS = {
     "v0": units_to_chunks,
     "v1": units_to_chunks_v1,
+    "fixed": units_to_chunks_fixed,
+    "v2": units_to_chunks_v2,
 }
 BM25_INDEXES = {
     "okapi": BM25Okapi,
@@ -47,12 +49,13 @@ RUNS = {
     "dense_qwen3_v1": {"retriever": "dense", "model": "Qwen/Qwen3-Embedding-0.6B", "chunking": "v1"},
     "bm25_stem_nostop_v1": {"retriever": "bm25", "tokenizer": "stem_nostop", "chunking": "v1"},
     "bm25_stem_lucene_v1": {"retriever": "bm25", "tokenizer": "stem", "idf": "lucene", "chunking": "v1"},
-    "hybrid_rrf_v1": {
-        "retriever": "hybrid",
-        "parts": ["bm25_stem_v1", "dense_qwen3_v1"],
-        "rrf_k": 60,
-        "chunking": "v1",
-    },
+    "hybrid_rrf_v1": {"retriever": "hybrid","parts": ["bm25_stem_v1", "dense_qwen3_v1"],"rrf_k": 60,"chunking": "v1",},
+    "bm25_stem_fixed": {"retriever": "bm25", "tokenizer": "stem", "chunking": "fixed"},
+    "dense_qwen3_fixed": {"retriever": "dense", "model": "Qwen/Qwen3-Embedding-0.6B", "chunking": "fixed"},
+    "hybrid_rrf_fixed": {"retriever": "hybrid","parts": ["bm25_stem_fixed", "dense_qwen3_fixed"],"rrf_k": 60,"chunking": "fixed",},
+    "bm25_stem_v2": {"retriever": "bm25", "tokenizer": "stem", "chunking": "v2"},
+    "dense_qwen3_v2": {"retriever": "dense", "model": "Qwen/Qwen3-Embedding-0.6B", "chunking": "v2"},
+    "hybrid_rrf_v2": {"retriever": "hybrid", "parts": ["bm25_stem_v2", "dense_qwen3_v2"], "rrf_k": 60, "chunking": "v2"},
 }
 
 
@@ -100,7 +103,7 @@ def gold_position(results: list[dict], unit_id: str) -> int | None:
     return next(positions, None)
 
 
-def evaluate(retriever, question: dict) -> dict:
+def evaluate(retriever, question: dict, words_per_chunk: dict[str, int]) -> dict:
     """Return what the retriever found for one question."""
 
     results = retriever.search(question["question"], DEPTH)
@@ -119,9 +122,12 @@ def evaluate(retriever, question: dict) -> dict:
     # Abstain questions have no gold units: the search is saved, the metrics are not defined.
     if gold:
         ranked = [result["unit_ids"] for result in results]
+        chunk_words = [words_per_chunk[result["chunk_id"]] for result in results]
         row["recall@5"] = recall_at_k(ranked, gold, 5)
         row["recall@10"] = recall_at_k(ranked, gold, 10)
         row["recall@20"] = recall_at_k(ranked, gold, 20)
+        row["recall@1000w"] = recall_at_budget(ranked, chunk_words, gold, 1000)
+        row["recall@2000w"] = recall_at_budget(ranked, chunk_words, gold, 2000)
         row["rr"] = reciprocal_rank(ranked, gold)
     return row
 
@@ -141,6 +147,8 @@ def summarise(rows: list[dict]) -> dict:
             "recall@5": mean(row["recall@5"] for row in group),
             "recall@10": mean(row["recall@10"] for row in group),
             "recall@20": mean(row["recall@20"] for row in group),
+            "recall@1000w": mean(row["recall@1000w"] for row in group),
+            "recall@2000w": mean(row["recall@2000w"] for row in group),
             "mrr": mean(row["rr"] for row in group),
         }
         for name, group in groups.items()
@@ -154,6 +162,7 @@ def main() -> None:
     run = RUNS[run_name]
 
     chunks = CHUNKERS[run["chunking"]](parse_units(load_soup(RAW)))
+    words_per_chunk = {chunk["chunk_id"]: len(chunk["text"].split()) for chunk in chunks}
     start = time.perf_counter()
     retriever, details = build_retriever(run, chunks)
     build_seconds = time.perf_counter() - start
@@ -162,19 +171,18 @@ def main() -> None:
         questions = [json.loads(line) for line in file]
     questions = [question for question in questions if question["split"] == SPLIT]
 
+    
     start = time.perf_counter()
-    rows = [evaluate(retriever, question) for question in questions]
+    rows = [evaluate(retriever, question, words_per_chunk) for question in questions]
     query_seconds = (time.perf_counter() - start) / len(questions)
     summary = summarise(rows)
 
-    print(f"{'type':<12}{'n':>4}{'recall@5':>10}{'recall@10':>11}{'recall@20':>11}{'mrr':>8}")
+    columns = ["recall@5", "recall@10", "recall@20", "recall@1000w", "recall@2000w", "mrr"]
+    print(f"{'type':<12}{'n':>4}" + "".join(f"{column:>14}" for column in columns))
     for name, values in summary.items():
-        print(
-            f"{name:<12}{values['questions']:>4}{values['recall@5']:>10.3f}"
-            f"{values['recall@10']:>11.3f}{values['recall@20']:>11.3f}{values['mrr']:>8.3f}"
-        )
+        print(f"{name:<12}{values['questions']:>4}" + "".join(f"{values[column]:>14.3f}" for column in columns))
     abstain = len(rows) - summary["total"]["questions"]
-    print(f"{'abstain':<12}{abstain:>4}{'-':>10}{'-':>11}{'-':>8}")
+    print(f"{'abstain':<12}{abstain:>4}" + "".join(f"{'-':>14}" for _ in columns))
 
     config = {
         "run": run_name,

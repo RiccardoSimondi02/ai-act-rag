@@ -19,3 +19,17 @@ def reciprocal_rank(ranked_chunks: list[list[str]], gold: list[str]) -> float:
         if gold_set & set(unit_ids):
             return 1 / position
     return 0.0
+
+
+def recall_at_budget(ranked_chunks: list[list[str]], chunk_words: list[int], gold: list[str], budget: int) -> float:
+    """Return the share of gold units found in the first chunks that their sum is lower or equal to the budget"""
+
+    k = 0
+    total_words = 0
+    for unit_ids, words in zip(ranked_chunks, chunk_words):
+        if total_words + words <= budget:
+            k += 1
+            total_words += words
+        else:
+            break
+    return recall_at_k(ranked_chunks, gold, k)
