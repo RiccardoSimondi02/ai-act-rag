@@ -219,6 +219,8 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
+.vscode
+
 progetto-1-rag-produzione.md
 run.txt
 domande.txt

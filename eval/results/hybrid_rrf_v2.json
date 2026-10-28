@@ -27,8 +27,8 @@
     "split": "dev",
     "depth": 100,
     "chunks": 749,
-    "build_seconds": 7.54,
-    "mean_query_seconds": 0.0406
+    "build_seconds": 11.81,
+    "mean_query_seconds": 0.0231
   },
   "summary": {
     "factual": {

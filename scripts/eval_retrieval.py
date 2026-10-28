@@ -10,9 +10,11 @@ from statistics import mean
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+from ai_act_rag.retrieval.rerank import RerankedRetriever
 from ai_act_rag.evaluation.metrics import recall_at_budget, recall_at_k, reciprocal_rank
 from ai_act_rag.ingestion.chunking import units_to_chunks, units_to_chunks_fixed, units_to_chunks_v1, units_to_chunks_v2
 from ai_act_rag.ingestion.parse_eurlex import load_soup, parse_units
+import numpy as np
 from rank_bm25 import BM25Okapi
 
 from ai_act_rag.retrieval.bm25 import BM25Lucene, BM25Retriever, tokenize, tokenize_stem, tokenize_stem_nostop
@@ -56,6 +58,22 @@ RUNS = {
     "bm25_stem_v2": {"retriever": "bm25", "tokenizer": "stem", "chunking": "v2"},
     "dense_qwen3_v2": {"retriever": "dense", "model": "Qwen/Qwen3-Embedding-0.6B", "chunking": "v2"},
     "hybrid_rrf_v2": {"retriever": "hybrid", "parts": ["bm25_stem_v2", "dense_qwen3_v2"], "rrf_k": 60, "chunking": "v2"},
+    "dense_qwen3_v2_rerank": {
+        "retriever": "rerank",
+        "first_stage": "dense_qwen3_v2",
+        "model": "BAAI/bge-reranker-v2-m3",
+        "max_length": 512,
+        "n_candidates": 30,
+        "chunking": "v2",
+    },
+    "hybrid_rrf_v2_rerank": {
+        "retriever": "rerank",
+        "first_stage": "hybrid_rrf_v2",
+        "model": "BAAI/bge-reranker-v2-m3",
+        "max_length": 512,
+        "n_candidates": 30,
+        "chunking": "v2",
+    },
 }
 
 
@@ -83,6 +101,21 @@ def build_retriever(run: dict, chunks: list[dict]) -> tuple:
         # Saved in place of the list of names: the full configuration of each part.
         return HybridRetriever(retrievers, run["rrf_k"], DEPTH), {"parts": parts}
 
+    if run["retriever"] == "rerank":
+        name = run["first_stage"]
+        first_stage_run = RUNS[name]
+        if first_stage_run["chunking"] != run["chunking"]:
+            sys.exit(f"{name} uses chunking {first_stage_run['chunking']}, the rerank run uses {run['chunking']}")
+        first_stage, first_stage_details = build_retriever(first_stage_run, chunks)
+
+        from sentence_transformers import CrossEncoder
+
+        model = CrossEncoder(run["model"], device="cuda", max_length=run["max_length"])
+        chunks_by_id = {chunk["chunk_id"]: chunk for chunk in chunks}
+        retriever = RerankedRetriever(first_stage, chunks_by_id, model, run["n_candidates"])
+        return retriever, {"first_stage": {name: first_stage_run | first_stage_details}}
+
+
     # Imported here: loading torch takes seconds and the BM25 runs do not need it.
     from ai_act_rag.retrieval.dense import DenseRetriever
 
@@ -94,6 +127,13 @@ def build_retriever(run: dict, chunks: list[dict]) -> tuple:
         "embeddings_from_cache": retriever.from_cache,
     }
     return retriever, details
+
+
+def percentiles(seconds: list[float]) -> dict[str, float]:
+    """Return the median and the 95th percentile of a list of durations."""
+
+    p50, p95 = np.percentile(seconds, [50, 95])
+    return {"p50": round(float(p50), 4), "p95": round(float(p95), 4)}
 
 
 def gold_position(results: list[dict], unit_id: str) -> int | None:
@@ -171,10 +211,17 @@ def main() -> None:
         questions = [json.loads(line) for line in file]
     questions = [question for question in questions if question["split"] == SPLIT]
 
-    
-    start = time.perf_counter()
-    rows = [evaluate(retriever, question, words_per_chunk) for question in questions]
-    query_seconds = (time.perf_counter() - start) / len(questions)
+    retriever.search("warm-up question", DEPTH)
+    # The reranker records the time of each stage: the warm-up must not count there either.
+    if hasattr(retriever, "timings"):
+        retriever.timings.clear()
+
+    rows = []
+    query_seconds = []
+    for question in questions:
+        start = time.perf_counter()
+        rows.append(evaluate(retriever, question, words_per_chunk))
+        query_seconds.append(time.perf_counter() - start)
     summary = summarise(rows)
 
     columns = ["recall@5", "recall@10", "recall@20", "recall@1000w", "recall@2000w", "mrr"]
@@ -191,10 +238,14 @@ def main() -> None:
         "split": SPLIT,
         "depth": DEPTH,
         "chunks": len(chunks),
-        # Building includes loading the model; the first question includes warming up the GPU.
+        # Building includes loading the models; the mean per question excludes the warm-up search.
         "build_seconds": round(build_seconds, 2),
-        "mean_query_seconds": round(query_seconds, 4),
+        "mean_query_seconds": round(mean(query_seconds), 4),
+        "query_seconds": percentiles(query_seconds),
     }
+    if hasattr(retriever, "timings"):
+        config["first_stage_seconds"] = percentiles([first for first, _ in retriever.timings])
+        config["rerank_seconds"] = percentiles([second for _, second in retriever.timings])
     out =RESULTS / f"{run_name}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8") as file:
