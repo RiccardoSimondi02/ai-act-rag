@@ -1,0 +1,33 @@
+{
+  "config": {
+    "run": "gemma3_no_context",
+    "model": "gemma3:12b",
+    "retrieval": {},
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 1024
+    },
+    "split": "dev",
+    "retrieval_seconds": 0.0,
+    "generation_seconds": {
+      "mean": 2.338,
+      "p50": 2.027,
+      "p95": 3.559
+    }
+  },
+  "summary": {
+    "questions": 30,
+    "invalid_answers": 0,
+    "prompt_truncated": 0,
+    "gold_in_context": 0,
+    "correct_abstentions": 0,
+    "wrong_abstentions": 0,
+    "answered_unanswerable": 5,
+    "inconsistent": 0,
+    "invalid_sources": 0,
+    "uncovered": 30,
+    "cites_gold": 0
+  }
+}
