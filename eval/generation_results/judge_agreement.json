@@ -1,0 +1,181 @@
+{
+  "correctness": {
+    "cases": 32,
+    "agreement": 0.625,
+    "kappa": 0.429,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "correct",
+        "partial",
+        "wrong"
+      ],
+      "matrix": [
+        [
+          8,
+          7,
+          0
+        ],
+        [
+          2,
+          7,
+          1
+        ],
+        [
+          0,
+          2,
+          5
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "gemma3_rerank_1000w q001",
+        "label": "partial",
+        "judge": "wrong",
+        "reason": "The answer includes multiple incorrect or unrelated fine amounts and conditions."
+      },
+      {
+        "key": "gemma3_rerank_1000w q002",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer correctly states the main requirement and the exception for criminal offenses, but it adds an extra condition about public availability that is not in the expected answer."
+      },
+      {
+        "key": "gemma3_rerank_1000w q004",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer includes the correct date (2 December 2027) for the obligations of high-risk AI systems listed in Annex III, but it also includes an incorrect date (2 August 2028) for systems listed in Annex I, which is not asked in the question."
+      },
+      {
+        "key": "gemma3_rerank_1000w q007",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer provides detailed exceptions to the prohibition, which are not asked for in the question."
+      },
+      {
+        "key": "gemma3_rerank_1000w q025",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer includes all key facts but adds an extra point about financial institutions which is not asked in the question."
+      },
+      {
+        "key": "gemma3_rerank_1000w q026",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer provides detailed and accurate information about the prohibition and its applicability date, but includes additional details not asked for in the question."
+      },
+      {
+        "key": "gemma3_rerank_1000w q028",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer provides detailed and accurate information about post-market monitoring systems and who must set them up, but includes additional information beyond what was asked."
+      },
+      {
+        "key": "gemma3_rerank_1000w q043",
+        "label": "wrong",
+        "judge": "partial",
+        "reason": "The answer provides relevant context about administrative fines but does not mention the specific fine amount for using a prohibited AI practice."
+      },
+      {
+        "key": "gemma3_rerank_1000w q049",
+        "label": "partial",
+        "judge": "correct",
+        "reason": "The answer covers all key aspects of the expected answer without any extraneous or incorrect information."
+      },
+      {
+        "key": "gemma3_rerank_1000w q060",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer includes correct information about the composition of the European Artificial Intelligence Board, including the representatives from Member States, the European Data Protection Supervisor as an observer, and the AI Office attending without voting. However, it introduces an additional claim about other national and Union authorities being invited on a case-by-case basis, which is not part of the expected answer."
+      },
+      {
+        "key": "gemma3_no_context q044",
+        "label": "partial",
+        "judge": "correct",
+        "reason": "The answer covers all key points accurately and includes additional relevant details."
+      },
+      {
+        "key": "gemma3_no_context q049",
+        "label": "wrong",
+        "judge": "partial",
+        "reason": "The answer provides context and factors to consider but misses the core definition of 'substantial modification' as required."
+      }
+    ],
+    "judged_on_one_side_only": []
+  },
+  "abstention_ok": {
+    "cases": 7,
+    "agreement": 0.857,
+    "kappa": 0.72,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "yes",
+        "no"
+      ],
+      "matrix": [
+        [
+          3,
+          0
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "gemma3_rerank_1000w q016",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The answer provides definitions related to 'general-purpose AI model' and 'general-purpose AI system', but does not define 'artificial general intelligence (AGI)', which is not covered by the AI Act."
+      }
+    ],
+    "judged_on_one_side_only": []
+  },
+  "supported": {
+    "cases": 40,
+    "agreement": 0.925,
+    "kappa": 0.684,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "yes",
+        "no"
+      ],
+      "matrix": [
+        [
+          33,
+          2
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "q028 claim 4",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The source directly states that the setting-up, implementation and maintenance of a post-market monitoring system, in accordance with Article 72, is required.",
+        "claim": "Article 17(1) states that setting up, implementation and maintenance of a post-market monitoring system, in accordance with Article 72, is required."
+      },
+      {
+        "key": "q040 claim 1",
+        "label": "yes",
+        "judge": "no",
+        "reason": "The sources specify that providers of AI models released under a free and open-source license are exempt from certain obligations, but only under specific conditions (e.g., parameters must be publicly available, and the exemption does not apply to general-purpose AI models with systemic risks).",
+        "claim": "Providers of AI models released under a free and open-source license are exempt from some obligations."
+      },
+      {
+        "key": "q056 claim 8",
+        "label": "yes",
+        "judge": "no",
+        "reason": "The source mentions 'the number of registered end-users' but does not state it is a criterion.",
+        "claim": "The number of registered end-users is also a criterion."
+      }
+    ],
+    "judged_on_one_side_only": []
+  }
+}

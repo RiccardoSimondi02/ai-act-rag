@@ -1,0 +1,28 @@
+{
+  "config": {
+    "run": "gemma3_no_context",
+    "judge_model": "qwen2.5:14b",
+    "judge_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 512
+    },
+    "generation_model": "gemma3:12b",
+    "judge_seconds": 19.3
+  },
+  "summary": {
+    "claims_judged": 0,
+    "claims_supported": 0,
+    "supported_rate": null,
+    "answers_graded": 25,
+    "correctness": {
+      "correct": 1,
+      "partial": 16,
+      "wrong": 8
+    },
+    "abstain_questions": 5,
+    "correct_abstentions": 2,
+    "judge_failures": 0
+  }
+}
