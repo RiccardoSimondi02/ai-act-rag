@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          # The runners have no GPU: the CPU build of torch first, at the version in requirements.txt.
+          pip install "$(grep '^torch==' requirements.txt)" --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      - name: Tests
+        run: pytest -q
+
+  eval-gate:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      HF_HUB_DISABLE_PROGRESS_BARS: "1"
+      TQDM_DISABLE: "1"
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install "$(grep '^torch==' requirements.txt)" --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+
+      # About 3 GB of models: downloaded once, then restored. Change the key if a model changes.
+      - name: Cache Hugging Face models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-${{ runner.os }}-Qwen3-Embedding-0.6B-bge-reranker-v2-m3
+
+      - name: Build units
+        run: python scripts/build_units.py
+
+      - name: Retrieval evaluation
+        run: python scripts/eval_retrieval.py dense_qwen3_v2_rerank
+
+      - name: Check thresholds
+        run: python scripts/check_thresholds.py dense_qwen3_v2_rerank
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: retrieval-results
+          path: eval/results/dense_qwen3_v2_rerank.json

@@ -1,0 +1,53 @@
+{
+  "config": {
+    "run": "gemma3_rerank_1000w",
+    "model": "gemma3:12b",
+    "retrieval": {
+      "dense_qwen3_v2_rerank": {
+        "retriever": "rerank",
+        "first_stage": {
+          "dense_qwen3_v2": {
+            "retriever": "dense",
+            "model": "Qwen/Qwen3-Embedding-0.6B",
+            "chunking": "v2",
+            "library": "sentence-transformers",
+            "weights_dtype": "torch.bfloat16",
+            "encode_seconds": 2.96,
+            "embeddings_from_cache": true
+          }
+        },
+        "model": "BAAI/bge-reranker-v2-m3",
+        "max_length": 512,
+        "n_candidates": 30,
+        "chunking": "v2"
+      }
+    },
+    "context_words": 1000,
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 1024
+    },
+    "split": "dev",
+    "retrieval_seconds": 22.46,
+    "generation_seconds": {
+      "mean": 2.446,
+      "p50": 2.264,
+      "p95": 5.054
+    }
+  },
+  "summary": {
+    "questions": 30,
+    "invalid_answers": 0,
+    "prompt_truncated": 0,
+    "gold_in_context": 24,
+    "correct_abstentions": 3,
+    "wrong_abstentions": 1,
+    "answered_unanswerable": 2,
+    "inconsistent": 0,
+    "invalid_sources": 0,
+    "uncovered": 0,
+    "cites_gold": 23
+  }
+}

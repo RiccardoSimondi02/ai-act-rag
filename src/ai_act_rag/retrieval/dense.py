@@ -4,9 +4,12 @@ import time
 from pathlib import Path
 
 import numpy as np
+import torch
 from sentence_transformers import SentenceTransformer
 
 from ai_act_rag.retrieval.base import SearchResult
+
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def normalise(vectors: np.ndarray) -> np.ndarray:
@@ -21,7 +24,7 @@ class DenseRetriever:
     def __init__(self, chunks: list[dict], model_name: str, cache_dir: Path) -> None:
         self.chunks = chunks
         self.model_name = model_name
-        self.model = SentenceTransformer(model_name, device="cuda")
+        self.model = SentenceTransformer(model_name, device=DEVICE)
         self.embeddings = self._load_or_encode(Path(cache_dir))
 
     def _load_or_encode(self, cache_dir: Path) -> np.ndarray:

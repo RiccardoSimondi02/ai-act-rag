@@ -1,0 +1,28 @@
+{
+  "config": {
+    "run": "gemma3_rerank_1000w_r1",
+    "judge_model": "qwen2.5:14b",
+    "judge_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 512
+    },
+    "generation_model": "gemma3:12b",
+    "judge_seconds": 70.4
+  },
+  "summary": {
+    "claims_judged": 91,
+    "claims_supported": 76,
+    "supported_rate": 0.835,
+    "answers_graded": 24,
+    "correctness": {
+      "correct": 11,
+      "partial": 11,
+      "wrong": 2
+    },
+    "abstain_questions": 5,
+    "correct_abstentions": 4,
+    "judge_failures": 0
+  }
+}

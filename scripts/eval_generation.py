@@ -18,6 +18,8 @@ from ai_act_rag.ingestion.parse_eurlex import load_soup, parse_units
 RESULTS = ROOT / "eval" / "generation_results"
 GENERATION_RUNS = {
     "gemma3_rerank_1000w": {"model": "gemma3:12b", "retrieval": "dense_qwen3_v2_rerank", "context_words": 1000},
+    "gemma3_rerank_1000w_r1": {"model": "gemma3:12b", "retrieval": "dense_qwen3_v2_rerank", "context_words": 1000},
+    "gemma3_rerank_1000w_r2": {"model": "gemma3:12b", "retrieval": "dense_qwen3_v2_rerank", "context_words": 1000},
     "gemma3_rerank_2000w": {"model": "gemma3:12b", "retrieval": "dense_qwen3_v2_rerank", "context_words": 2000},
     "gemma3_no_context": {"model": "gemma3:12b", "retrieval": None},
 }

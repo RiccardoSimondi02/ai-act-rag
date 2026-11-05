@@ -110,10 +110,12 @@ def build_retriever(run: dict, chunks: list[dict]) -> tuple:
 
         from sentence_transformers import CrossEncoder
 
-        model = CrossEncoder(run["model"], device="cuda", max_length=run["max_length"])
+        from ai_act_rag.retrieval.dense import DEVICE
+
+        model = CrossEncoder(run["model"], device=DEVICE, max_length=run["max_length"])
         chunks_by_id = {chunk["chunk_id"]: chunk for chunk in chunks}
         retriever = RerankedRetriever(first_stage, chunks_by_id, model, run["n_candidates"])
-        return retriever, {"first_stage": {name: first_stage_run | first_stage_details}}
+        return retriever, {"first_stage": {name: first_stage_run | first_stage_details}, "device": DEVICE}
 
 
     # Imported here: loading torch takes seconds and the BM25 runs do not need it.
@@ -122,6 +124,7 @@ def build_retriever(run: dict, chunks: list[dict]) -> tuple:
     retriever = DenseRetriever(chunks, run["model"], EMBEDDINGS)
     details = {
         "library": "sentence-transformers",
+        "device": str(retriever.model.device),
         "weights_dtype": str(next(retriever.model.parameters()).dtype),
         "encode_seconds": retriever.encode_seconds,
         "embeddings_from_cache": retriever.from_cache,

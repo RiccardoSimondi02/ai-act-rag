@@ -1,4 +1,6 @@
---extra-index-url https://download.pytorch.org/whl/cu132
+# Install torch first, with the build for your machine, then the rest:
+#   GPU: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cu132
+#   CPU: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 
 beautifulsoup4==4.15.0
 lxml==6.1.3
@@ -9,4 +11,7 @@ snowballstemmer==3.1.1
 
 sentence-transformers==6.1.0
 transformers==5.19.0
-torch==2.14.1+cu132
+torch==2.14.1
+
+ollama==0.6.3
+scikit-learn==1.9.1
