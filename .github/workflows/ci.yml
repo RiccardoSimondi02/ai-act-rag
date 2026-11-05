@@ -33,7 +33,7 @@ jobs:
   eval-gate:
     needs: test
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       HF_HUB_DISABLE_PROGRESS_BARS: "1"
       TQDM_DISABLE: "1"
@@ -56,6 +56,14 @@ jobs:
         with:
           path: ~/.cache/huggingface
           key: hf-${{ runner.os }}-Qwen3-Embedding-0.6B-bge-reranker-v2-m3
+
+      # Encoding the chunks on CPU takes minutes: redone only when the text, the parser, the chunking
+      # or the dense model change.
+      - name: Cache embeddings
+        uses: actions/cache@v4
+        with:
+          path: data/embeddings
+          key: embeddings-${{ hashFiles('data/raw/ai_act.html', 'src/ai_act_rag/ingestion/*.py', 'src/ai_act_rag/retrieval/dense.py') }}
 
       - name: Build units
         run: python scripts/build_units.py

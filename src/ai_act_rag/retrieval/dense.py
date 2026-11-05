@@ -24,7 +24,8 @@ class DenseRetriever:
     def __init__(self, chunks: list[dict], model_name: str, cache_dir: Path) -> None:
         self.chunks = chunks
         self.model_name = model_name
-        self.model = SentenceTransformer(model_name, device=DEVICE)
+        model_kwargs = {"dtype": torch.float32} if DEVICE == "cpu" else {}
+        self.model = SentenceTransformer(model_name, device=DEVICE, model_kwargs=model_kwargs)
         self.embeddings = self._load_or_encode(Path(cache_dir))
 
     def _load_or_encode(self, cache_dir: Path) -> np.ndarray:
