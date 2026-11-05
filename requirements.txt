@@ -3,6 +3,7 @@
 #   CPU: pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
 
 beautifulsoup4==4.15.0
+soupsieve==2.10
 lxml==6.1.3
 pytest==9.1.1
 numpy==2.5.3
