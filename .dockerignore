@@ -1,0 +1,5 @@
+*
+!requirements.txt
+!src/
+!data/raw/
+**/__pycache__
