@@ -227,3 +227,6 @@ python scripts/compare_runs.py bm25_stem_v1 dense_qwen3_v1
 docker compose up                                   # then open http://localhost:8000
 python scripts/load_test.py                         # dev questions through the API, timings from the logs
 ```
+
+# Demo
+![Testo alternativo](readme_files/gif_github.gif)
