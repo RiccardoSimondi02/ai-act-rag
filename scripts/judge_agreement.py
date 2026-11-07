@@ -1,9 +1,11 @@
 """Compare the verdicts of the LLM judge with the labels in eval/labels, criterion by criterion."""
 
+import argparse
 import csv
 import json
 import math
 import warnings
+from pathlib import Path
 
 from sklearn.metrics import cohen_kappa_score, confusion_matrix
 
@@ -22,8 +24,8 @@ def yes_no(value: bool | None) -> str | None:
     return None if value is None else ("yes" if value else "no")
 
 
-def read_labels(name: str) -> list[dict]:
-    with open(LABELS / name, encoding="utf-8-sig") as file:
+def read_labels(path: Path) -> list[dict]:
+    with open(path, encoding="utf-8-sig") as file:
         return list(csv.DictReader(file, delimiter=";"))
 
 
@@ -98,18 +100,26 @@ def print_result(criterion: str, result: dict) -> None:
 
 
 def main() -> None:
-    answer_labels = read_labels("answers.csv")
-    judged = {run_name: load_judged(run_name) for run_name in sorted({label["run"] for label in answer_labels})}
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--labels-dir", type=Path, default=LABELS)
+    parser.add_argument("--claims-run", default=RAG_RUN, help="the run the labelled claims come from")
+    parser.add_argument("--out", default="judge_agreement.json", help="file name in eval/generation_results")
+    args = parser.parse_args()
+
+    answer_labels = read_labels(args.labels_dir / "answers.csv")
+    runs = {label["run"] for label in answer_labels} | {args.claims_run}
+    judged = {run_name: load_judged(run_name) for run_name in sorted(runs)}
 
     results = {criterion: compare(answer_pairs(criterion, answer_labels, judged), VALUES[criterion])
                for criterion in ("correctness", "abstention_ok")}
-    results["supported"] = compare(claim_pairs(read_labels("claims.csv"), judged[RAG_RUN]), VALUES["supported"])
+    claim_labels = read_labels(args.labels_dir / "claims.csv")
+    results["supported"] = compare(claim_pairs(claim_labels, judged[args.claims_run]), VALUES["supported"])
 
     for criterion, result in results.items():
         print_result(criterion, result)
-    with open(RESULTS / "judge_agreement.json", "w", encoding="utf-8") as file:
+    with open(RESULTS / args.out, "w", encoding="utf-8") as file:
         json.dump(results, file, indent=2, ensure_ascii=False)
-    print(f"\nsaved {(RESULTS / 'judge_agreement.json').name}")
+    print(f"\nsaved {args.out}")
 
 
 if __name__ == "__main__":

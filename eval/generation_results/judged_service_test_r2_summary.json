@@ -1,0 +1,28 @@
+{
+  "config": {
+    "run": "service_test",
+    "judge_model": "qwen2.5:14b",
+    "judge_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 512
+    },
+    "generation_model": "gemma3:12b",
+    "judge_seconds": 54.5
+  },
+  "summary": {
+    "claims_judged": 77,
+    "claims_supported": 71,
+    "supported_rate": 0.922,
+    "answers_graded": 25,
+    "correctness": {
+      "correct": 14,
+      "partial": 10,
+      "wrong": 1
+    },
+    "abstain_questions": 5,
+    "correct_abstentions": 5,
+    "judge_failures": 0
+  }
+}

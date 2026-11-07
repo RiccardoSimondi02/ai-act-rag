@@ -1,5 +1,6 @@
 """Evaluate a retriever on the dev split and save the results of each question."""
 
+import argparse
 import json
 import sys
 import time
@@ -199,9 +200,11 @@ def summarise(rows: list[dict]) -> dict:
 
 
 def main() -> None:
-    if len(sys.argv) != 2 or sys.argv[1] not in RUNS:
-        sys.exit(f"Usage: python scripts/eval_retrieval.py RUN, where RUN is one of: {', '.join(RUNS)}")
-    run_name = sys.argv[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("run", choices=RUNS)
+    parser.add_argument("--split", choices=["dev", "test"], default=SPLIT)
+    args = parser.parse_args()
+    run_name, split = args.run, args.split
     run = RUNS[run_name]
 
     chunks = CHUNKERS[run["chunking"]](parse_units(load_soup(RAW)))
@@ -212,7 +215,7 @@ def main() -> None:
 
     with open(QUESTIONS, encoding="utf-8") as file:
         questions = [json.loads(line) for line in file]
-    questions = [question for question in questions if question["split"] == SPLIT]
+    questions = [question for question in questions if question["split"] == split]
 
     retriever.search("warm-up question", DEPTH)
     # The reranker records the time of each stage: the warm-up must not count there either.
@@ -238,7 +241,7 @@ def main() -> None:
         "run": run_name,
         **run,
         **details,
-        "split": SPLIT,
+        "split": split,
         "depth": DEPTH,
         "chunks": len(chunks),
         # Building includes loading the models; the mean per question excludes the warm-up search.
@@ -249,7 +252,7 @@ def main() -> None:
     if hasattr(retriever, "timings"):
         config["first_stage_seconds"] = percentiles([first for first, _ in retriever.timings])
         config["rerank_seconds"] = percentiles([second for _, second in retriever.timings])
-    out =RESULTS / f"{run_name}.json"
+    out = RESULTS / (f"{run_name}.json" if split == SPLIT else f"{run_name}_{split}.json")
     out.parent.mkdir(parents=True, exist_ok=True)
     with open(out, "w", encoding="utf-8") as file:
         json.dump({"config": config, "summary": summary, "questions": rows}, file, indent=2, ensure_ascii=False)

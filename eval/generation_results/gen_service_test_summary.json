@@ -1,0 +1,16 @@
+{
+  "config": {
+    "run": "service_test",
+    "model": "gemma3:12b",
+    "retrieval": {
+      "dense_qwen3_v2_rerank": {
+        "chunking": "v2",
+        "model": "BAAI/bge-reranker-v2-m3",
+        "n_candidates": 30
+      }
+    },
+    "context_words": 1000,
+    "split": "test",
+    "source": "answers of the service at http://localhost:8000"
+  }
+}

@@ -5,7 +5,7 @@ import sys
 import time
 from collections import Counter
 
-from eval_generation import GENERATION_RUNS, RESULTS
+from eval_generation import RESULTS
 from eval_retrieval import CHUNKERS, QUESTIONS, RAW, ROOT
 
 from ai_act_rag.evaluation.judge import (
@@ -100,8 +100,9 @@ def summarise(judged: list[dict]) -> dict:
 
 
 def main() -> None:
-    if len(sys.argv) != 2 or sys.argv[1] not in GENERATION_RUNS:
-        sys.exit(f"Usage: python scripts/judge_generation.py RUN, where RUN is one of: {', '.join(GENERATION_RUNS)}")
+    runs = sorted(path.name[len("gen_"):-len(".jsonl")] for path in RESULTS.glob("gen_*.jsonl"))
+    if len(sys.argv) != 2 or sys.argv[1] not in runs:
+        sys.exit(f"Usage: python scripts/judge_generation.py RUN, where RUN is one of: {', '.join(runs)}")
     run_name = sys.argv[1]
 
     with open(RESULTS / f"gen_{run_name}.jsonl", encoding="utf-8") as file:

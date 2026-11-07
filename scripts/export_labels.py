@@ -1,9 +1,11 @@
 """Export answers and sampled claims of the generation runs to CSV files, to label them by hand."""
 
+import argparse
 import csv
 import json
 import random
 import sys
+from pathlib import Path
 
 from eval_generation import RESULTS as GENERATION_RESULTS
 from eval_retrieval import QUESTIONS, RAW, ROOT
@@ -66,18 +68,33 @@ def write_csv(path, columns: list[str], records: list[dict]) -> None:
 
 
 def main() -> None:
-    answers_path, claims_path = LABELS / "answers.csv", LABELS / "claims.csv"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--rag-run", default=RAG_RUN)
+    parser.add_argument("--n-answers", type=int, help="RAG answers to sample; all of them when left out")
+    parser.add_argument("--include", nargs="*", default=[], help="question ids always among the RAG answers")
+    parser.add_argument("--no-context-run", default=NO_CONTEXT_RUN)
+    parser.add_argument("--n-no-context", type=int, default=N_NO_CONTEXT)
+    parser.add_argument("--n-claims", type=int, default=N_CLAIMS)
+    parser.add_argument("--out-dir", type=Path, default=LABELS)
+    args = parser.parse_args()
+
+    answers_path, claims_path = args.out_dir / "answers.csv", args.out_dir / "claims.csv"
     if answers_path.exists() or claims_path.exists():
-        sys.exit(f"{LABELS.relative_to(ROOT)} already has label files: delete them first to export again.")
+        sys.exit(f"{args.out_dir} already has label files: delete them first to export again.")
 
     with open(QUESTIONS, encoding="utf-8") as file:
         expected = {question["id"]: question["expected_answer"] for question in map(json.loads, file)}
-    rag_rows = load_rows(RAG_RUN)
-    no_context_rows = load_rows(NO_CONTEXT_RUN)
+    rag_rows = load_rows(args.rag_run)
 
-    chosen_ids = set(random.Random(SEED).sample(sorted(row["id"] for row in no_context_rows), N_NO_CONTEXT))
-    answers = [answer_record(row, RAG_RUN, expected) for row in rag_rows]
-    answers += [answer_record(row, NO_CONTEXT_RUN, expected) for row in no_context_rows if row["id"] in chosen_ids]
+    rag_ids = {row["id"] for row in rag_rows}
+    if args.n_answers is not None:
+        others = sorted(rag_ids - set(args.include))
+        rag_ids = set(args.include) | set(random.Random(SEED).sample(others, args.n_answers - len(args.include)))
+    answers = [answer_record(row, args.rag_run, expected) for row in rag_rows if row["id"] in rag_ids]
+    if args.n_no_context:
+        no_context_rows = load_rows(args.no_context_run)
+        chosen_ids = set(random.Random(SEED).sample(sorted(row["id"] for row in no_context_rows), args.n_no_context))
+        answers += [answer_record(row, args.no_context_run, expected) for row in no_context_rows if row["id"] in chosen_ids]
 
     # Every claim of the RAG answers that did not abstain, in file order so the sample is reproducible.
     all_claims = [
@@ -86,7 +103,7 @@ def main() -> None:
         if row["answer"] is not None and not row["abstained"]
         for index, claim in enumerate(row["answer"]["claims"], start=1)
     ]
-    sampled = random.Random(SEED).sample(all_claims, min(N_CLAIMS, len(all_claims)))
+    sampled = random.Random(SEED).sample(all_claims, min(args.n_claims, len(all_claims)))
     sampled.sort(key=lambda item: (item[0]["id"], item[1]))
 
     chunks_by_id = {chunk["chunk_id"]: chunk for chunk in units_to_chunks_v2(parse_units(load_soup(RAW)))}
@@ -101,10 +118,10 @@ def main() -> None:
         for row, index, claim in sampled
     ]
 
-    LABELS.mkdir(parents=True, exist_ok=True)
+    args.out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(answers_path, ANSWER_COLUMNS, answers)
     write_csv(claims_path, CLAIM_COLUMNS, claims)
-    print(f"{len(answers)} answers, {len(claims)} claims sampled out of {len(all_claims)}, saved in {LABELS.relative_to(ROOT)}")
+    print(f"{len(answers)} answers, {len(claims)} claims sampled out of {len(all_claims)}, saved in {args.out_dir}")
 
 
 if __name__ == "__main__":

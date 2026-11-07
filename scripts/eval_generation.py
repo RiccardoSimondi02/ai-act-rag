@@ -1,5 +1,6 @@
 """Answer the dev questions with a generation run and check the citations of each answer."""
 
+import argparse
 import gc
 import json
 import sys
@@ -10,6 +11,7 @@ import numpy as np
 
 from eval_retrieval import CHUNKERS, DEPTH, QUESTIONS, RAW, RESULTS, ROOT, RUNS, SPLIT, build_retriever
 
+from ai_act_rag.generation.context import select_sources
 from ai_act_rag.generation.generate import GENERATION_OPTIONS, generate
 from ai_act_rag.generation.prompt import build_messages
 from ai_act_rag.generation.verify import cited_units, cites_gold, coverage, valid_sources
@@ -23,21 +25,6 @@ GENERATION_RUNS = {
     "gemma3_rerank_2000w": {"model": "gemma3:12b", "retrieval": "dense_qwen3_v2_rerank", "context_words": 2000},
     "gemma3_no_context": {"model": "gemma3:12b", "retrieval": None},
 }
-
-
-def select_sources(results: list[dict], chunks_by_id: dict[str, dict], budget: int) -> list[dict]:
-    """Return the chunks of the first results that fit in a budget of words, like recall_at_budget."""
-
-    selected = []
-    total_words = 0
-    for result in results:
-        chunk = chunks_by_id[result["chunk_id"]]
-        words = len(chunk["text"].split())
-        if total_words + words > budget:
-            break
-        total_words += words
-        selected.append(chunk)
-    return selected
 
 
 def retrieve(run: dict, questions: list[dict]) -> tuple[dict, dict]:
@@ -121,14 +108,17 @@ def summarise(rows: list[dict]) -> dict:
 
 
 def main() -> None:
-    if len(sys.argv) != 2 or sys.argv[1] not in GENERATION_RUNS:
-        sys.exit(f"Usage: python scripts/eval_generation.py RUN, where RUN is one of: {', '.join(GENERATION_RUNS)}")
-    run_name = sys.argv[1]
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("run", choices=GENERATION_RUNS)
+    parser.add_argument("--split", choices=["dev", "test"], default=SPLIT)
+    args = parser.parse_args()
+    run_name, split = args.run, args.split
     run = GENERATION_RUNS[run_name]
+    output_name = run_name if split == SPLIT else f"{run_name}_{split}"
 
     with open(QUESTIONS, encoding="utf-8") as file:
         questions = [json.loads(line) for line in file]
-    questions = [question for question in questions if question["split"] == SPLIT]
+    questions = [question for question in questions if question["split"] == split]
 
     # All the retrieval first, then all the generation: the two never share the GPU.
     start = time.perf_counter()
@@ -151,18 +141,18 @@ def main() -> None:
         **run,
         "retrieval": retrieval_config,
         "options": GENERATION_OPTIONS,
-        "split": SPLIT,
+        "split": split,
         "retrieval_seconds": round(retrieval_seconds, 2),
         "generation_seconds": {"mean": round(mean(seconds), 3), "p50": round(float(p50), 3), "p95": round(float(p95), 3)},
     }
 
     RESULTS.mkdir(parents=True, exist_ok=True)
-    with open(RESULTS / f"gen_{run_name}.jsonl", "w", encoding="utf-8", newline="\n") as file:
+    with open(RESULTS / f"gen_{output_name}.jsonl", "w", encoding="utf-8", newline="\n") as file:
         for row in rows:
             file.write(json.dumps(row, ensure_ascii=False) + "\n")
-    with open(RESULTS / f"gen_{run_name}_summary.json", "w", encoding="utf-8") as file:
+    with open(RESULTS / f"gen_{output_name}_summary.json", "w", encoding="utf-8") as file:
         json.dump({"config": config, "summary": summary}, file, indent=2, ensure_ascii=False)
-    print(f"saved {(RESULTS / f'gen_{run_name}.jsonl').relative_to(ROOT)}")
+    print(f"saved {(RESULTS / f'gen_{output_name}.jsonl').relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

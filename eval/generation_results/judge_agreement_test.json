@@ -1,0 +1,137 @@
+{
+  "correctness": {
+    "cases": 11,
+    "agreement": 0.636,
+    "kappa": 0.371,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "correct",
+        "partial",
+        "wrong"
+      ],
+      "matrix": [
+        [
+          5,
+          4,
+          0
+        ],
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          1
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "service_test q008",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer covers all key points of the expected answer, including the criteria for systemic risk and the obligations of providers. However, it includes an additional point about notification to the Commission which is not part of the expected answer."
+      },
+      {
+        "key": "service_test q023",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer correctly states the fine amount and the cap for SMEs, including start-ups, but it incorrectly refers to paragraphs 3, 4, and 5 which are not mentioned in the expected answer."
+      },
+      {
+        "key": "service_test q047",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer provides the correct main requirement and an additional condition under which the obligation does not apply, which is not asked for in the expected answer."
+      },
+      {
+        "key": "service_test q052",
+        "label": "correct",
+        "judge": "partial",
+        "reason": "The answer provides a correct definition of a 'real-time remote biometric identification system' and includes the aspect of limited short delays to avoid circumvention. However, it introduces an additional explanation about 'remote biometric identification system' which is not part of the expected answer."
+      }
+    ],
+    "judged_on_one_side_only": []
+  },
+  "abstention_ok": {
+    "cases": 5,
+    "agreement": 0.2,
+    "kappa": 0.0,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "yes",
+        "no"
+      ],
+      "matrix": [
+        [
+          1,
+          0
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "service_test q011",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The answer provides provisions related to the code of practice but does not list any companies that have signed it."
+      },
+      {
+        "key": "service_test q015",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The answer provides information about the right to explanations but does not address compensation."
+      },
+      {
+        "key": "service_test q017",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The answer does not provide the requested information and does not name any person."
+      },
+      {
+        "key": "service_test q018",
+        "label": "no",
+        "judge": "yes",
+        "reason": "The answer provides dates related to entry into force and application but does not address the transposition deadline, which is not applicable as it is a regulation."
+      }
+    ],
+    "judged_on_one_side_only": []
+  },
+  "supported": {
+    "cases": 20,
+    "agreement": 0.95,
+    "kappa": 0.0,
+    "confusion_matrix": {
+      "rows_labels_columns_judge": [
+        "yes",
+        "no"
+      ],
+      "matrix": [
+        [
+          19,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    "disagreements": [
+      {
+        "key": "q054 claim 1",
+        "label": "yes",
+        "judge": "no",
+        "reason": "The source does not reference Article 6(1) in the way the claim states; it only specifies which articles apply to high-risk AI systems under certain conditions.",
+        "claim": "Article 6(1) is referenced in relation to AI systems classified as high-risk AI systems in accordance with Article 6(1) related to products covered by the Union harmonisation legislation listed in Section B of Annex I."
+      }
+    ],
+    "judged_on_one_side_only": []
+  }
+}
